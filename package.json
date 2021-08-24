@@ -1,0 +1,29 @@
+{
+  "name": "currencychangerateapi",
+  "version": "1.0.0",
+  "description": "It is an open api for getting change rates",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "keywords": ["change","currency","rate","api","free","scrape"],
+  "author": "Uğur Kellecioğlu",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsdom": "^17.0.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ugur-kellecioglu/CurrencyChangeRateAPI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ugur-kellecioglu/CurrencyChangeRateAPI/issues"
+  },
+  "homepage": "https://github.com/ugur-kellecioglu/CurrencyChangeRateAPI#readme"
+}
