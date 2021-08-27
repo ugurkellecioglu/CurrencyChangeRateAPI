@@ -42,6 +42,42 @@ app.get('/:from/', async function (req, res) {
     }
 })
 
+app.get('/:from/:amount', async function (req, res) {
+    try {
+        request(`https://www.x-rates.com/table/?from=${req.params.from}&amount=${req.params.amount}`, function (error, response, html) {
+            if (!error && response.statusCode == 200) {
+                const resp = [[{ from: req.params.from }]]
+                const currencyrates = []
+                const dom = new JSDOM(html);
+                const document = dom.window.document;
+                const list = document.querySelector('.tablesorter.ratesTable > tbody')
+                if (list === null) {
+                    res.json({ err: 'Couldnt find table element', status: 400 })
+                    return
+                }
+                const listColl = list.children
+                resp.forEach.call(listColl, (el) => {
+                    const name = el.children[0].textContent;
+                    const currency = el.children[1];
+                    const currencyText = currency.textContent;
+                    const url = currency.children[0].getAttribute('href')
+                    const symbole = url.substring(url.indexOf('to') + 3)
+                    const obj = {
+                        name,
+                        rate: currencyText,
+                        symbole,
+                    }
+                    currencyrates.push(obj)
+                })
+                resp.push(currencyrates)
+                res.json(resp)
+            }
+        });
+    } catch (error) {
+        res.json({ error: 'Something went wrong', status: 400 })
+    }
+})
+
 app.get('/:from/:to', async function (req, res) {
     if (req.params.from === req.params.to) res.json({ from: req.params.from, to: req.params.to, currency: 1 })
     request(`https://www.x-rates.com/table/?from=${req.params.from}&amount=1`, function (error, response, html) {
