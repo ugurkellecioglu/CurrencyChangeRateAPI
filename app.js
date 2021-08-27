@@ -25,11 +25,14 @@ app.get('/:from/', async function (req, res) {
                     const name = el.children[0].textContent;
                     const currency = el.children[1];
                     const currencyText = currency.textContent;
+                    const currencyInv = el.children[2];
+                    const currencyInvText = currencyInv.textContent;
                     const url = currency.children[0].getAttribute('href')
                     const symbole = url.substring(url.indexOf('to') + 3)
                     const obj = {
                         name,
                         rate: currencyText,
+                        invRate: currencyInvText,
                         symbole,
                     }
                     currencyrates.push(obj)
@@ -75,6 +78,7 @@ app.get('/:from/:to', async function (req, res) {
                 result.push({
                     from: req.params.from,
                     to: req.params.to,
+                    invRate: temp[0].children[2].textContent,
                     rate: temp[0].children[1].textContent
                 })
                 res.json(result)
